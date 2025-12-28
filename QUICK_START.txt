@@ -1,0 +1,95 @@
+===============================================
+   AI URL MALICIOUS DETECTION WEB APP
+   Quick Start Guide
+===============================================
+
+📦 STEP 1: Install Dependencies
+--------------------------------
+Open PowerShell/Command Prompt in this folder and run:
+
+    pip install -r requirements.txt
+
+
+▶️ STEP 2: Start the Server
+----------------------------
+Run the Flask backend:
+
+    python app.py
+
+
+🌐 STEP 3: Open Browser
+------------------------
+Once the server starts, open your browser and go to:
+
+    http://127.0.0.1:5000
+
+
+✅ STEP 4: Test the App
+------------------------
+Try these example URLs:
+
+SAFE URLs:
+  • https://www.google.com
+  • https://github.com
+  • https://stackoverflow.com
+
+SUSPICIOUS URLs:
+  • http://192.168.1.1/login
+  • http://paypal-verify-account-login.tk
+  • http://secure-banking-update@malicious.com
+  • http://free-prize-winner-claim-urgent.com
+
+
+🛑 To Stop the Server
+----------------------
+Press CTRL+C in the terminal
+
+
+📁 Project Files
+----------------
+✓ app.py           - Flask backend server
+✓ detector.py      - AI detection logic
+✓ index.html       - Frontend interface
+✓ style.css        - UI styling
+✓ script.js        - Frontend logic
+✓ requirements.txt - Dependencies
+
+
+🔧 Troubleshooting
+------------------
+If you get "Module not found" error:
+  → Run: pip install flask flask-cors
+
+If port 5000 is already in use:
+  → Stop other apps using port 5000
+  → Or change port in app.py
+
+If browser can't connect:
+  → Make sure Flask server is running
+  → Check the terminal for errors
+
+
+💡 Features
+-----------
+✓ AI-powered URL analysis
+✓ Real-time detection
+✓ Risk score calculation
+✓ Confidence percentage
+✓ Detailed analysis report
+✓ Modern responsive UI
+✓ Works completely offline
+
+
+🎯 How to Use
+-------------
+1. Enter any URL in the input box
+2. Click "Check URL" button
+3. View the result:
+   • Green = Safe URL
+   • Red = Malicious URL
+4. Read the detailed analysis
+
+
+===============================================
+        Ready to detect malicious URLs!
+===============================================
