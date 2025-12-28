@@ -1,12 +1,34 @@
 // ULTIMATE ULTRA-PRO URL ANALYZER - Advanced JavaScript
 // Version 4.0 - 15 Layers, SSL, DNS, Headers, Hacker Detection
 
-const API_URL = 'http://127.0.0.1:5000/api/analyze';
-const STATS_URL = 'http://127.0.0.1:5000/api/statistics';
-const HISTORY_URL = 'http://127.0.0.1:5000/api/history';
+const LOCAL_API_URL = 'http://127.0.0.1:5000';
+const REMOTE_API_URL = 'https://url-detector-x603.onrender.com';
 
 let threatChart = null;
 let scanInProgress = false;
+
+// Smart fetch with automatic fallback
+async function smartFetch(endpoint, options = {}) {
+    // Try local server first
+    try {
+        const localUrl = `${LOCAL_API_URL}${endpoint}`;
+        const response = await fetch(localUrl, options);
+        if (response.ok || response.status >= 400) {
+            return response; // Return both successful and HTTP error responses
+        }
+    } catch (localError) {
+        console.log('⚠️ Local server unavailable, trying remote...');
+    }
+    
+    // Fallback to remote server
+    try {
+        const remoteUrl = `${REMOTE_API_URL}${endpoint}`;
+        const response = await fetch(remoteUrl, options);
+        return response;
+    } catch (remoteError) {
+        throw new Error('Both local and remote servers are unavailable');
+    }
+}
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,7 +109,7 @@ function initializeThreatChart() {
 // Load Statistics
 async function loadStatistics() {
     try {
-        const response = await fetch(STATS_URL);
+        const response = await smartFetch('/api/statistics');
         const data = await response.json();
         
         if (data.success) {
@@ -119,7 +141,7 @@ async function loadStatistics() {
 // Load History
 async function loadHistory() {
     try {
-        const response = await fetch(`${HISTORY_URL}?limit=20`);
+        const response = await smartFetch('/api/history?limit=20');
         const data = await response.json();
         
         if (data.success) {
@@ -173,7 +195,7 @@ function truncateURL(url, maxLength) {
 // Clear History
 async function clearHistory() {
     try {
-        const response = await fetch('http://127.0.0.1:5000/api/clear-history', {
+        const response = await smartFetch('/api/clear-history', {
             method: 'POST'
         });
         
@@ -218,7 +240,7 @@ async function scanURL() {
         
         console.log('🔍 Analyzing URL:', url);
         
-        const response = await fetch(API_URL, {
+        const response = await smartFetch('/api/analyze', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -246,7 +268,7 @@ async function scanURL() {
         
     } catch (error) {
         console.error('❌ Error during analysis:', error);
-        showError(`Connection error: ${error.message}. Make sure the server is running on http://127.0.0.1:5000`);
+        showError(`Connection error: ${error.message}`);
     } finally {
         scanInProgress = false;
         setLoadingState(false);
